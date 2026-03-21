@@ -1,0 +1,13 @@
+{
+  "name": "knowforge-tests",
+  "version": "1.0.0",
+  "description": "Tests for KnowForge",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3"
+  }
+}
