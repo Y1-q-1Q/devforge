@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KnowForge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        const { invoke } = window.__TAURI__.tauri;
+
+        // 添加笔记
+        async function addNote() {
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+            const tags = document.getElementById('tags').value;
+            
+            if (!title || !content) {
+                alert('Title and content are required');
+                return;
+            }
+            
+            try {
+                await invoke('add_note', { title, content, tags });
+                document.getElementById('title').value = '';
+                document.getElementById('content').value = '';
+                document.getElementById('tags').value = '';
+                searchNotes();
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        // 搜索笔记
+        async function searchNotes() {
+            const query = document.getElementById('search').value;
+            
+            try {
+                const results = await invoke('search_notes', { query });
+                const notes = JSON.parse(results);
+                displayNotes(notes);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        // 显示笔记列表
+        function displayNotes(notes) {
+            const container = document.getElementById('notes-list');
+            container.innerHTML = '';
+            
+            notes.forEach(note => {
+                const div = document.createElement('div');
+                div.className = 'bg-white rounded-lg shadow p-4 mb-4';
+                div.innerHTML = `
+                    <h3 class="font-bold text-lg mb-2">${escapeHtml(note.title)}</h3>
+                    <p class="text-gray-600 mb-2">${escapeHtml(note.content.substring(0, 200))}...</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-blue-500">${escapeHtml(note.tags)}</span>
+                        <span class="text-xs text-gray-400">${note.created_at}</span>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // HTML转义
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // 页面加载时搜索所有笔记
+        window.addEventListener('DOMContentLoaded', () => {
+            searchNotes();
+        });
+    </script>
+</head>
+<body class="bg-gray-100 h-screen">
+    <div class="flex h-full">
+        <!-- 侧边栏 -->
+        <div class="w-64 bg-gray-800 text-white p-4">
+            <h1 class="text-2xl font-bold mb-6">KnowForge</h1>
+            <nav>
+                <a href="#" class="block py-2 px-4 bg-gray-700 rounded mb-2">📚 All Notes</a>
+                <a href="#" class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">🏷️ Tags</a>
+                <a href="#" class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">⭐ Starred</a>
+                <a href="#" class="block py-2 px-4 hover:bg-gray-700 rounded mb-2">📊 Analytics</a>
+            </nav>
+        </div>
+        
+        <!-- 主内容区 -->
+        <div class="flex-1 flex flex-col">
+            <!-- 顶部搜索栏 -->
+            <div class="bg-white p-4 shadow">
+                <div class="flex gap-4">
+                    <input type="text" id="search" placeholder="Search notes..." 
+                           class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                           onkeyup="searchNotes()">
+                    <button onclick="document.getElementById('add-modal').classList.remove('hidden')"
+                            class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                        + New Note
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 笔记列表 -->
+            <div id="notes-list" class="flex-1 overflow-auto p-4">
+                <!-- 动态加载 -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- 添加笔记弹窗 -->
+    <div id="add-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg p-6 w-2/3 max-w-2xl">
+            <h2 class="text-xl font-bold mb-4">Add New Note</h2>
+            <input type="text" id="title" placeholder="Title" class="w-full px-4 py-2 border rounded mb-4">
+            <textarea id="content" placeholder="Content (Markdown supported)" 
+                      class="w-full px-4 py-2 border rounded mb-4 h-48"></textarea>
+            <input type="text" id="tags" placeholder="Tags (comma separated)" class="w-full px-4 py-2 border rounded mb-4">
+            <div class="flex justify-end gap-4">
+                <button onclick="document.getElementById('add-modal').classList.add('hidden')"
+                        class="px-4 py-2 text-gray-600 hover:text-gray-800">Cancel</button>
+                <button onclick="addNote(); document.getElementById('add-modal').classList.add('hidden')"
+                        class="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Save</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
