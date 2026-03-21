@@ -1,0 +1,12 @@
+{
+  "cmd.generateCode": "生成代码",
+  "cmd.explainCode": "解释代码",
+  "cmd.reviewCode": "审查代码",
+  "cmd.refactorCode": "重构代码",
+  "cmd.viewStats": "查看统计",
+  "settings.apiKey": "OpenAI API Key",
+  "settings.model": "AI 模型",
+  "settings.temperature": "温度",
+  "settings.cacheEnabled": "启用响应缓存",
+  "settings.showStats": "启动时显示统计"
+}

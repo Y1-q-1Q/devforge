@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import * as https from 'https';
 import * as fs from 'fs';
 import * as path from 'path';
+import { t } from './i18n';
 
 // Configuration
 const CONFIG_SECTION = 'codeforge';
@@ -191,11 +192,9 @@ export function activate(context: vscode.ExtensionContext) {
     const stats = loadStats();
     
     // Show welcome message with stats
-    vscode.window.showInformationMessage(
-        `CodeForge ready! You've used ${stats.totalRequests} requests.`,
-        'View Stats'
-    ).then(selection => {
-        if (selection === 'View Stats') {
+    const statsMsg = t('msg.welcome', stats.totalRequests.toString());
+    vscode.window.showInformationMessage(statsMsg, t('ui.statsTitle')).then(selection => {
+        if (selection === t('ui.statsTitle')) {
             showStats();
         }
     });
@@ -206,12 +205,12 @@ export function activate(context: vscode.ExtensionContext) {
         
         if (!apiKey) {
             const action = await vscode.window.showErrorMessage(
-                'OpenAI API Key not configured',
-                'Configure Now',
+                t('msg.noApiKey'),
+                t('settings.apiKey'),
                 'Get API Key'
             );
             
-            if (action === 'Configure Now') {
+            if (action === t('settings.apiKey')) {
                 vscode.commands.executeCommand('workbench.action.openSettings', CONFIG_SECTION);
             } else if (action === 'Get API Key') {
                 vscode.env.openExternal(vscode.Uri.parse('https://platform.openai.com/api-keys'));
@@ -220,7 +219,7 @@ export function activate(context: vscode.ExtensionContext) {
         }
         
         if (!isValidApiKey(apiKey)) {
-            vscode.window.showErrorMessage('Invalid API Key format. Should start with "sk-"');
+            vscode.window.showErrorMessage(t('error.apiKeyInvalid'));
             return null;
         }
         
@@ -304,16 +303,16 @@ export function activate(context: vscode.ExtensionContext) {
 
         const editor = vscode.window.activeTextEditor;
         if (!editor) {
-            vscode.window.showErrorMessage('No active editor');
+            vscode.window.showErrorMessage(t('msg.noEditor'));
             return;
         }
 
         const prompt = await vscode.window.showInputBox({
-            prompt: 'Describe what code you want to generate',
+            prompt: t('cmd.generateCode'),
             placeHolder: 'e.g., Create a function to sort an array of objects by date',
             validateInput: (value) => {
                 if (!value || value.trim().length < 3) {
-                    return 'Please enter a more detailed description';
+                    return t('msg.inputTooShort');
                 }
                 return null;
             }
@@ -365,7 +364,7 @@ export function activate(context: vscode.ExtensionContext) {
 
                 vscode.window.showInformationMessage(`Code generated! (${tokens} tokens)`);
             } catch (error) {
-                vscode.window.showErrorMessage(`Error: ${error}`);
+                vscode.window.showErrorMessage(t('error.requestFailed', (error as Error).message));
             }
         });
     });
@@ -424,7 +423,7 @@ export function activate(context: vscode.ExtensionContext) {
                 outputChannel.appendLine(content);
                 outputChannel.show();
             } catch (error) {
-                vscode.window.showErrorMessage(`Error: ${error}`);
+                vscode.window.showErrorMessage(t('error.requestFailed', (error as Error).message));
             }
         });
     });
@@ -476,7 +475,7 @@ export function activate(context: vscode.ExtensionContext) {
                 outputChannel.appendLine(content);
                 outputChannel.show();
             } catch (error) {
-                vscode.window.showErrorMessage(`Error: ${error}`);
+                vscode.window.showErrorMessage(t('error.requestFailed', (error as Error).message));
             }
         });
     });
@@ -538,7 +537,7 @@ export function activate(context: vscode.ExtensionContext) {
                 });
                 await vscode.window.showTextDocument(doc, vscode.ViewColumn.Beside);
             } catch (error) {
-                vscode.window.showErrorMessage(`Error: ${error}`);
+                vscode.window.showErrorMessage(t('error.requestFailed', (error as Error).message));
             }
         });
     });

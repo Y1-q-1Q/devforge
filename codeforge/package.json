@@ -27,22 +27,27 @@
     "commands": [
       {
         "command": "codeforge.generateCode",
-        "title": "Generate Code",
+        "title": "%cmd.generateCode%",
         "category": "CodeForge"
       },
       {
         "command": "codeforge.explainCode",
-        "title": "Explain Code",
+        "title": "%cmd.explainCode%",
         "category": "CodeForge"
       },
       {
         "command": "codeforge.reviewCode",
-        "title": "Review Code",
+        "title": "%cmd.reviewCode%",
         "category": "CodeForge"
       },
       {
         "command": "codeforge.refactorCode",
-        "title": "Refactor Code",
+        "title": "%cmd.refactorCode%",
+        "category": "CodeForge"
+      },
+      {
+        "command": "codeforge.viewStats",
+        "title": "%cmd.viewStats%",
         "category": "CodeForge"
       }
     ],
@@ -64,13 +69,31 @@
         "codeforge.apiKey": {
           "type": "string",
           "default": "",
-          "description": "OpenAI API Key",
+          "description": "%settings.apiKey%",
           "scope": "application"
         },
         "codeforge.model": {
           "type": "string",
           "default": "gpt-3.5-turbo",
-          "description": "AI Model to use"
+          "enum": ["gpt-3.5-turbo", "gpt-4", "gpt-4-turbo-preview"],
+          "description": "%settings.model%"
+        },
+        "codeforge.temperature": {
+          "type": "number",
+          "default": 0.7,
+          "minimum": 0,
+          "maximum": 2,
+          "description": "%settings.temperature%"
+        },
+        "codeforge.cacheEnabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "%settings.cacheEnabled%"
+        },
+        "codeforge.showStats": {
+          "type": "boolean",
+          "default": true,
+          "description": "%settings.showStats%"
         }
       }
     }

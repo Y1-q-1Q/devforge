@@ -1,0 +1,12 @@
+{
+  "cmd.generateCode": "Generate Code",
+  "cmd.explainCode": "Explain Code",
+  "cmd.reviewCode": "Review Code",
+  "cmd.refactorCode": "Refactor Code",
+  "cmd.viewStats": "View Statistics",
+  "settings.apiKey": "OpenAI API Key",
+  "settings.model": "AI Model",
+  "settings.temperature": "Temperature",
+  "settings.cacheEnabled": "Enable Response Cache",
+  "settings.showStats": "Show Statistics on Startup"
+}
