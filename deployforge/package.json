@@ -1,0 +1,33 @@
+{
+  "name": "deployforge",
+  "version": "0.1.0",
+  "description": "One-click deployment tool for developers",
+  "main": "lib/index.js",
+  "bin": {
+    "deployforge": "./bin/deployforge.js",
+    "df": "./bin/deployforge.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "commander": "^11.0.0",
+    "inquirer": "^8.2.5",
+    "chalk": "^4.1.2",
+    "ora": "^5.4.1",
+    "axios": "^1.6.0",
+    "archiver": "^6.0.0",
+    "ssh2": "^1.14.0",
+    "node-fetch": "^3.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/archiver": "^6.0.0",
+    "@types/ssh2": "^1.11.0",
+    "typescript": "^5.0.0"
+  },
+  "keywords": ["deploy", "cli", "developer", "automation"],
+  "author": "tinyfish",
+  "license": "MIT"
+}
