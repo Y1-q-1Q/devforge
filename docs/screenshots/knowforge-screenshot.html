@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+        
+        .screenshot {
+            width: 1200px;
+            height: 800px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .browser {
+            width: 1000px;
+            height: 700px;
+            background: #1a1a2e;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+        }
+        
+        .browser-header {
+            height: 40px;
+            background: #16213e;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 8px;
+        }
+        
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .dot-red { background: #ff5f56; }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #27c93f; }
+        
+        .browser-content {
+            display: flex;
+            height: calc(100% - 40px);
+        }
+        
+        .sidebar {
+            width: 240px;
+            background: #0f3460;
+            padding: 24px;
+            color: white;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .tagline {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 32px;
+        }
+        
+        .nav-item {
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .nav-item.active {
+            background: rgba(102, 126, 234, 0.5);
+        }
+        
+        .main {
+            flex: 1;
+            background: #1a1a2e;
+            padding: 24px;
+            overflow-y: auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .search-box {
+            width: 400px;
+            padding: 12px 16px;
+            background: #16213e;
+            border: 1px solid #0f3460;
+            border-radius: 8px;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+        
+        .note-card {
+            background: #16213e;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #0f3460;
+        }
+        
+        .note-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 12px;
+        }
+        
+        .note-content {
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        
+        .note-tags {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .tag {
+            padding: 4px 12px;
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        
+        .note-date {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="screenshot">
+        <div class="browser">
+            <div class="browser-header">
+                <div class="dot dot-red"></div>
+                <div class="dot dot-yellow"></div>
+                <div class="dot dot-green"></div>
+            </div>
+            <div class="browser-content">
+                <div class="sidebar">
+                    <div class="logo">
+                        <div class="logo-icon">🧠</div>
+                        KnowForge
+                    </div>
+                    <div class="tagline">Your second brain</div>
+                    <div class="nav-item active">📚 All Notes <span style="margin-left:auto">12</span></div>
+                    <div class="nav-item">🏷️ Tags</div>
+                    <div class="nav-item">⭐ Starred</div>
+                    <div class="nav-item">📊 Analytics</div>
+                </div>
+                <div class="main">
+                    <div class="header">
+                        <input type="text" class="search-box" placeholder="🔍 Search notes..." value="">
+                        <button class="btn">+ New Note</button>
+                    </div>
+                    <div class="notes-grid">
+                        <div class="note-card">
+                            <div class="note-title">React Hooks Best Practices</div>
+                            <div class="note-content">useEffect cleanup functions, dependency arrays, and custom hooks patterns...</div>
+                            <div class="note-tags">
+                                <span class="tag">react</span>
+                                <span class="tag">javascript</span>
+                            </div>
+                            <div class="note-date">Mar 21, 2026</div>
+                        </div>
+                        <div class="note-card">
+                            <div class="note-title">System Design Interview Prep</div>
+                            <div class="note-content">Load balancing strategies, database sharding, and caching layers...</div>
+                            <div class="note-tags">
+                                <span class="tag">system-design</span>
+                                <span class="tag">interview</span>
+                            </div>
+                            <div class="note-date">Mar 20, 2026</div>
+                        </div>
+                        <div class="note-card">
+                            <div class="note-title">Docker Compose Setup</div>
+                            <div class="note-content">Multi-container orchestration, environment variables, and volume management...</div>
+                            <div class="note-tags">
+                                <span class="tag">docker</span>
+                                <span class="tag">devops</span>
+                            </div>
+                            <div class="note-date">Mar 19, 2026</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+        
+        .screenshot {
+            width: 1200px;
+            height: 800px;
+            background: #1e1e1e;
+            display: flex;
+        }
+        
+        .sidebar {
+            width: 48px;
+            background: #333333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 16px;
+            gap: 16px;
+        }
+        
+        .icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        .icon.active {
+            background: #007acc;
+        }
+        
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .tab-bar {
+            height: 35px;
+            background: #2d2d2d;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            gap: 4px;
+        }
+        
+        .tab {
+            padding: 8px 20px;
+            background: #1e1e1e;
+            color: #cccccc;
+            font-size: 13px;
+            border-top: 2px solid #007acc;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .editor {
+            flex: 1;
+            background: #1e1e1e;
+            padding: 20px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #d4d4d4;
+            overflow: auto;
+        }
+        
+        .line { display: flex; }
+        .line-num {
+            width: 50px;
+            color: #858585;
+            text-align: right;
+            padding-right: 20px;
+            user-select: none;
+        }
+        .line-content { flex: 1; }
+        
+        .keyword { color: #569cd6; }
+        .function { color: #dcdcaa; }
+        .string { color: #ce9178; }
+        .comment { color: #6a9955; }
+        .number { color: #b5cea8; }
+        
+        .panel {
+            width: 400px;
+            background: #252526;
+            border-left: 1px solid #1e1e1e;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .panel-header {
+            height: 35px;
+            background: #2d2d2d;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            color: #cccccc;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .panel-content {
+            flex: 1;
+            padding: 16px;
+            overflow: auto;
+        }
+        
+        .chat-message {
+            margin-bottom: 16px;
+        }
+        
+        .chat-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        .username {
+            font-size: 13px;
+            color: #cccccc;
+            font-weight: 600;
+        }
+        
+        .message {
+            background: #2d2d2d;
+            padding: 12px;
+            border-radius: 8px;
+            color: #d4d4d4;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        
+        .code-block {
+            background: #1e1e1e;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 8px;
+            font-family: monospace;
+            font-size: 12px;
+            color: #d4d4d4;
+            border: 1px solid #3e3e42;
+        }
+        
+        .input-area {
+            padding: 16px;
+            border-top: 1px solid #3e3e42;
+        }
+        
+        .input-box {
+            width: 100%;
+            padding: 10px 14px;
+            background: #3c3c3c;
+            border: 1px solid #3e3e42;
+            border-radius: 6px;
+            color: #cccccc;
+            font-size: 13px;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            background: #007acc;
+            color: white;
+            border-radius: 4px;
+            font-size: 11px;
+            margin-left: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="screenshot">
+        <div class="sidebar">
+            <div class="icon">📁</div>
+            <div class="icon">🔍</div>
+            <div class="icon active">🤖</div>
+            <div class="icon">🐛</div>
+            <div class="icon">⚡</div>
+        </div>
+        <div class="main">
+            <div class="tab-bar">
+                <div class="tab">📄 utils.js</div>
+                <div class="tab">📄 api.ts</div>
+            </div>
+            <div class="editor">
+                <div class="line">
+                    <span class="line-num">1</span>
+                    <span class="line-content"><span class="keyword">async function</span> <span class="function">fetchUserData</span>(<span class="string">userId</span>) {</span>
+                </div>
+                <div class="line">
+                    <span class="line-num">2</span>
+                    <span class="line-content">  <span class="keyword">try</span> {</span>
+                </div>
+                <div class="line">
+                    <span class="line-num">3</span>
+                    <span class="line-content">    <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="function">fetch</span>(<span class="string">`/api/users/${userId}`</span>);</span>
+                </div>
+                <div class="line">
+                    <span class="line-num">4</span>
+                    <span class="line-content">    <span class="keyword">if</span> (!response.ok) {</span>
+                </div>
+                <div class="line">
+                    <span class="line-num">5</span>
+                    <span class="line-content">      <span class="keyword">throw new</span> <span class="function">Error</span>(<span class="string">'Failed to fetch user'</span>);</span>
+                </div>
+                <div class="line">
+                    <span class="line-num">6</span>
+                    <span class="line-content">    }</span>
+                </div>
+                <div class="line">
+                    <span class="line-num">7</span>
+                    <span class="line-content">    <span class="keyword">return await</span> response.<span class="function">json</span>();</span>
+                </div>
+                <div class="line">
+                    <span class="line-num">8</span>
+                    <span class="line-content">  } <span class="keyword">catch</span> (error) {</span>
+                </div>
+                <div class="line">
+                    <span class="line-num">9</span>
+                    <span class="line-content">    console.<span class="function">error</span>(<span class="string">'Error:'</span>, error);</span>
+                </div>
+                <div class="line">
+                    <span class="line-num">10</span>
+                    <span class="line-content">    <span class="keyword">return null</span>;</span>
+                </div>
+                <div class="line">
+                    <span class="line-num">11</span>
+                    <span class="line-content">  }</span>
+                </div>
+                <div class="line">
+                    <span class="line-num">12</span>
+                    <span class="line-content">}</span>
+                </div>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="panel-header">
+                🤖 CodeForge <span class="badge">AI</span>
+            </div>
+            <div class="panel-content">
+                <div class="chat-message">
+                    <div class="chat-header">
+                        <div class="avatar">👤</div>
+                        <span class="username">You</span>
+                    </div>
+                    <div class="message">
+                        Explain this function and suggest improvements
+                    </div>
+                </div>
+                <div class="chat-message">
+                    <div class="chat-header">
+                        <div class="avatar">🤖</div>
+                        <span class="username">CodeForge</span>
+                    </div>
+                    <div class="message">
+                        This function fetches user data but has several issues:
+                        <br><br>
+                        1. <strong>No type safety</strong> - Consider using TypeScript
+                        <br>
+                        2. <strong>No retry logic</strong> - Network failures won't recover
+                        <br>
+                        3. <strong>Silent failures</strong> - Returns null instead of throwing
+                        <br><br>
+                        Here's an improved version:
+                        <div class="code-block">
+async function fetchUserData(userId: string): Promise&lt;User&gt; {
+  const maxRetries = 3;
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      const res = await fetch(`/api/users/${userId}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      if (i === maxRetries - 1) throw err;
+      await delay(1000 * (i + 1));
+    }
+  }
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="input-area">
+                <input type="text" class="input-box" placeholder="Ask CodeForge..." value="">
+            </div>
+        </div>
+    </div>
+</body>
+</html>
