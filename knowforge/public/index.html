@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KnowForge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-tertiary: #0f3460;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --accent: #667eea;
+        }
+        
+        [data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #e2e8f0;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --accent: #3b82f6;
+        }
+        
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        
+        .sidebar {
+            background-color: var(--bg-secondary);
+        }
+        
+        .note-card { 
+            transition: all 0.2s; 
+            background-color: var(--bg-secondary);
+        }
+        .note-card:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2); 
+        }
+        
+        .tag { 
+            transition: all 0.2s; 
+            background-color: rgba(102, 126, 234, 0.2);
+            color: var(--accent);
+        }
+        .tag:hover { 
+            transform: scale(1.05); 
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+        
+        .settings-panel {
+            background-color: var(--bg-secondary);
+        }
+    </style>
+</head>
+<body class="h-screen overflow-hidden" data-theme="dark">
+    <div class="flex h-full">
+        <!-- Sidebar -->
+        <aside class="sidebar w-64 flex flex-col border-r border-gray-700">
+            <div class="p-6">
+                <h1 class="text-2xl font-bold flex items-center gap-2">
+                    <i class="fas fa-brain" style="color: var(--accent)"></i>
+                    <span data-i18n="app.name">KnowForge</span>
+                </h1>
+                <p class="text-sm mt-1" style="color: var(--text-secondary)" data-i18n="app.tagline">你的第二大脑</p>
+            </div>
+            
+            <nav class="flex-1 px-4">
+                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg mb-2 transition-colors" 
+                   style="background-color: var(--bg-tertiary)">
+                    <i class="fas fa-book"></i>
+                    <span data-i18n="nav.allNotes">所有笔记</span>
+                    <span id="note-count" class="ml-auto text-xs px-2 py-1 rounded" 
+                          style="background-color: var(--accent)">0</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg mb-2 transition-colors hover:opacity-80">
+                    <i class="fas fa-tags"></i>
+                    <span data-i18n="nav.tags">标签</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg mb-2 transition-colors hover:opacity-80">
+                    <i class="fas fa-star"></i>
+                    <span data-i18n="nav.starred">收藏</span>
+                </a>
+            </nav>
+            
+            <div class="p-4 border-t border-gray-700">
+                <button onclick="openModal()" class="w-full btn-primary text-white py-3 rounded-lg flex items-center justify-center gap-2 hover:opacity-90">
+                    <i class="fas fa-plus"></i>
+                    <span data-i18n="btn.newNote">新建笔记</span>
+                </button>
+                <button onclick="toggleSettings()" class="w-full mt-2 py-2 rounded-lg flex items-center justify-center gap-2 hover:opacity-80"
+                        style="background-color: var(--bg-tertiary)">
+                    <i class="fas fa-cog"></i>
+                    <span data-i18n="settings.title">设置</span>
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col" style="background-color: var(--bg-primary)">
+            <!-- Header -->
+            <header class="border-b px-6 py-4" style="background-color: var(--bg-secondary); border-color: var(--bg-tertiary)">
+                <div class="flex items-center gap-4">
+                    <div class="flex-1 relative">
+                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2" style="color: var(--text-secondary)"></i>
+                        <input type="text" id="search" 
+                               data-i18n-placeholder="placeholder.search"
+                               placeholder="搜索笔记..." 
+                               class="w-full pl-12 pr-4 py-3 rounded-lg focus:outline-none focus:ring-2"
+                               style="background-color: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--bg-tertiary)"
+                               onkeyup="searchNotes()">
+                    </div>
+                    <button onclick="exportData()" class="p-3 rounded-lg hover:opacity-80" style="background-color: var(--bg-tertiary)"
+                            title="导出数据">
+                        <i class="fas fa-download"></i>
+                    </button>
+                    <button onclick="document.getElementById('import-file').click()" class="p-3 rounded-lg hover:opacity-80" style="background-color: var(--bg-tertiary)"
+                            title="导入数据">
+                        <i class="fas fa-upload"></i>
+                    </button>
+                    <input type="file" id="import-file" class="hidden" accept=".json" onchange="importData(this)">
+                </div>
+            </header>
+            
+            <!-- Notes Grid -->
+            <div id="notes-container" class="flex-1 overflow-auto p-6">
+                <div id="notes-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Notes will be loaded here -->
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Add/Edit Modal -->
+    <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-auto" style="background-color: var(--bg-secondary)">
+            <div class="flex justify-between items-center mb-4">
+                <h2 id="modal-title" class="text-xl font-bold" data-i18n="modal.addTitle">新建笔记</h2>
+                <button onclick="closeModal()" class="hover:opacity-80" style="color: var(--text-secondary)">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <input type="hidden" id="note-id">
+            
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-2" style="color: var(--text-secondary)" data-i18n="placeholder.title">标题</label>
+                <input type="text" id="note-title" 
+                       data-i18n-placeholder="placeholder.title"
+                       placeholder="输入笔记标题..."
+                       class="w-full px-4 py-2 rounded-lg focus:outline-none focus:ring-2"
+                       style="background-color: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--bg-tertiary)">
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-2" style="color: var(--text-secondary)" data-i18n="placeholder.content">内容</label>
+                <textarea id="note-content" rows="10" 
+                          data-i18n-placeholder="placeholder.content"
+                          placeholder="输入笔记内容（支持Markdown）..."
+                          class="w-full px-4 py-2 rounded-lg focus:outline-none focus:ring-2 font-mono"
+                          style="background-color: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--bg-tertiary)"></textarea>
+            </div>
+            
+            <div class="mb-6">
+                <label class="block text-sm font-medium mb-2" style="color: var(--text-secondary)" data-i18n="placeholder.tags">标签</label>
+                <input type="text" id="note-tags" 
+                       data-i18n-placeholder="placeholder.tags"
+                       placeholder="输入标签，用逗号分隔..."
+                       class="w-full px-4 py-2 rounded-lg focus:outline-none focus:ring-2"
+                       style="background-color: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--bg-tertiary)">
+            </div>
+            
+            <div class="flex justify-end gap-3">
+                <button onclick="closeModal()" class="px-4 py-2 rounded-lg hover:opacity-80" style="color: var(--text-secondary)" data-i18n="btn.cancel">取消</button>
+                <button onclick="saveNote()" class="px-6 py-2 btn-primary text-white rounded-lg hover:opacity-90" data-i18n="btn.save">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Panel -->
+    <div id="settings-panel" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="settings-panel rounded-xl p-6 w-full max-w-md max-h-[90vh] overflow-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold" data-i18n="settings.title">设置</h2>
+                <button onclick="toggleSettings()" class="hover:opacity-80" style="color: var(--text-secondary)">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-6">
+                <!-- Language -->
+                <div>
+                    <label class="block text-sm font-medium mb-2" style="color: var(--text-secondary)" data-i18n="settings.language">语言</label>
+                    <select id="setting-language" onchange="changeLanguage(this.value)" 
+                            class="w-full px-4 py-2 rounded-lg focus:outline-none"
+                            style="background-color: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--bg-tertiary)">
+                        <option value="zh">中文</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
+                
+                <!-- Theme -->
+                <div>
+                    <label class="block text-sm font-medium mb-2" style="color: var(--text-secondary)" data-i18n="settings.theme">主题</label>
+                    <select id="setting-theme" onchange="changeTheme(this.value)"
+                            class="w-full px-4 py-2 rounded-lg focus:outline-none"
+                            style="background-color: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--bg-tertiary)">
+                        <option value="dark" data-i18n="theme.dark">深色</option>
+                        <option value="light" data-i18n="theme.light">浅色</option>
+                    </select>
+                </div>
+                
+                <!-- Font Size -->
+                <div>
+                    <label class="block text-sm font-medium mb-2" style="color: var(--text-secondary)" data-i18n="settings.fontSize">字体大小</label>
+                    <input type="range" id="setting-fontsize" min="12" max="20" value="14" 
+                           onchange="changeFontSize(this.value)"
+                           class="w-full">
+                    <span id="fontsize-value" class="text-sm" style="color: var(--text-secondary)">14px</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // i18n
+        const i18n = {
+            zh: {
+                'app.name': 'KnowForge',
+                'app.tagline': '你的第二大脑',
+                'nav.allNotes': '所有笔记',
+                'nav.tags': '标签',
+                'nav.starred': '收藏',
+                'btn.newNote': '新建笔记',
+                'btn.save': '保存',
+                'btn.cancel': '取消',
+                'placeholder.search': '搜索笔记...',
+                'placeholder.title': '输入笔记标题...',
+                'placeholder.content': '输入笔记内容（支持Markdown）...',
+                'placeholder.tags': '输入标签，用逗号分隔...',
+                'modal.addTitle': '新建笔记',
+                'modal.editTitle': '编辑笔记',
+                'settings.title': '设置',
+                'settings.language': '语言',
+                'settings.theme': '主题',
+                'settings.fontSize': '字体大小',
+                'theme.dark': '深色',
+                'theme.light': '浅色',
+                'msg.noteCreated': '笔记创建成功',
+                'msg.noteUpdated': '笔记更新成功',
+                'msg.noteDeleted': '笔记删除成功',
+                'error.noTitle': '标题不能为空'
+            },
+            en: {
+                'app.name': 'KnowForge',
+                'app.tagline': 'Your second brain',
+                'nav.allNotes': 'All Notes',
+                'nav.tags': 'Tags',
+                'nav.starred': 'Starred',
+                'btn.newNote': 'New Note',
+                'btn.save': 'Save',
+                'btn.cancel': 'Cancel',
+                'placeholder.search': 'Search notes...',
+                'placeholder.title': 'Enter note title...',
+                'placeholder.content': 'Enter note content (Markdown supported)...',
+                'placeholder.tags': 'Enter tags separated by commas...',
+                'modal.addTitle': 'Add New Note',
+                'modal.editTitle': 'Edit Note',
+                'settings.title': 'Settings',
+                'settings.language': 'Language',
+                'settings.theme': 'Theme',
+                'settings.fontSize': 'Font Size',
+                'theme.dark': 'Dark',
+                'theme.light': 'Light',
+                'msg.noteCreated': 'Note created successfully',
+                'msg.noteUpdated': 'Note updated successfully',
+                'msg.noteDeleted': 'Note deleted successfully',
+                'error.noTitle': 'Title is required'
+            }
+        };
+        
+        let currentLang = 'zh';
+        
+        function t(key) {
+            return i18n[currentLang]?.[key] || i18n['en']?.[key] || key;
+        }
+        
+        function updateI18n() {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                el.textContent = t(key);
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                el.placeholder = t(key);
+            });
+        }
+        
+        function changeLanguage(lang) {
+            currentLang = lang;
+            updateI18n();
+            localStorage.setItem('language', lang);
+        }
+        
+        function changeTheme(theme) {
+            document.body.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+        }
+        
+        function changeFontSize(size) {
+            document.documentElement.style.fontSize = size + 'px';
+            document.getElementById('fontsize-value').textContent = size + 'px';
+            localStorage.setItem('fontSize', size);
+        }
+        
+        function toggleSettings() {
+            const panel = document.getElementById('settings-panel');
+            panel.classList.toggle('hidden');
+        }
+        
+        // Load saved settings
+        function loadSettings() {
+            const savedLang = localStorage.getItem('language') || 'zh';
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            const savedFontSize = localStorage.getItem('fontSize') || '14';
+            
+            currentLang = savedLang;
+            document.getElementById('setting-language').value = savedLang;
+            document.getElementById('setting-theme').value = savedTheme;
+            document.getElementById('setting-fontsize').value = savedFontSize;
+            
+            updateI18n();
+            changeTheme(savedTheme);
+            changeFontSize(savedFontSize);
+        }
+        
+        // API functions
+        const API_URL = '/api';
+        
+        async function loadNotes() {
+            try {
+                const response = await fetch(`${API_URL}/notes`);
+                const data = await response.json();
+                displayNotes(data.notes || data);
+                document.getElementById('note-count').textContent = (data.notes || data).length;
+            } catch (error) {
+                console.error('Error loading notes:', error);
+            }
+        }
+        
+        function displayNotes(notes) {
+            const container = document.getElementById('notes-list');
+            
+            if (notes.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-12" style="color: var(--text-secondary)">
+                        <i class="fas fa-book-open text-4xl mb-4"></i>
+                        <p>${t('msg.noNotes')}</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = notes.map(note => `
+                <div class="note-card rounded-xl p-5 border cursor-pointer" 
+                     style="border-color: var(--bg-tertiary)"
+                     onclick="editNote(${note.id})">
+                    <h3 class="font-bold text-lg mb-2 line-clamp-1">${escapeHtml(note.title)}</h3>
+                    <p class="text-sm mb-3 line-clamp-3" style="color: var(--text-secondary)">${escapeHtml(note.content)}</p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex gap-2 flex-wrap">
+                            ${note.tags ? note.tags.split(',').map(tag => 
+                                `<span class="tag text-xs px-2 py-1 rounded">${escapeHtml(tag.trim())}</span>`
+                            ).join('') : ''}
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="event.stopPropagation(); editNote(${note.id})" style="color: var(--text-secondary)" class="hover:opacity-80">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="event.stopPropagation(); deleteNote(${note.id})" style="color: var(--text-secondary)" class="hover:opacity-80">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="text-xs mt-3" style="color: var(--text-secondary)">
+                        ${new Date(note.created_at).toLocaleDateString(currentLang === 'zh' ? 'zh-CN' : 'en-US')}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        async function searchNotes() {
+            const query = document.getElementById('search').value;
+            try {
+                const response = await fetch(`${API_URL}/notes?search=${encodeURIComponent(query)}`);
+                const data = await response.json();
+                displayNotes(data.notes || data);
+            } catch (error) {
+                console.error('Error searching notes:', error);
+            }
+        }
+        
+        function openModal() {
+            document.getElementById('modal').classList.remove('hidden');
+            document.getElementById('modal-title').textContent = t('modal.addTitle');
+            document.getElementById('note-id').value = '';
+            document.getElementById('note-title').value = '';
+            document.getElementById('note-content').value = '';
+            document.getElementById('note-tags').value = '';
+        }
+        
+        function closeModal() {
+            document.getElementById('modal').classList.add('hidden');
+        }
+        
+        async function editNote(id) {
+            try {
+                const response = await fetch(`${API_URL}/notes/${id}`);
+                const note = await response.json();
+                
+                document.getElementById('modal').classList.remove('hidden');
+                document.getElementById('modal-title').textContent = t('modal.editTitle');
+                document.getElementById('note-id').value = note.id;
+                document.getElementById('note-title').value = note.title;
+                document.getElementById('note-content').value = note.content;
+                document.getElementById('note-tags').value = note.tags || '';
+            } catch (error) {
+                console.error('Error loading note:', error);
+                alert(t('error.loadFailed'));
+            }
+        }
+        
+        async function saveNote() {
+            const id = document.getElementById('note-id').value;
+            const title = document.getElementById('note-title').value.trim();
+            const content = document.getElementById('note-content').value.trim();
+            const tags = document.getElementById('note-tags').value.trim();
+            
+            if (!title) {
+                alert(t('error.noTitle'));
+                return;
+            }
+            
+            const noteData = { title, content, tags };
+            
+            try {
+                const url = id ? `${API_URL}/notes/${id}` : `${API_URL}/notes`;
+                const method = id ? 'PUT' : 'POST';
+                
+                const response = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(noteData)
+                });
+                
+                if (response.ok) {
+                    closeModal();
+                    loadNotes();
+                    showToast(id ? t('msg.noteUpdated') : t('msg.noteCreated'));
+                } else {
+                    const error = await response.json();
+                    alert(error.error || t('error.saveFailed'));
+                }
+            } catch (error) {
+                console.error('Error saving note:', error);
+                alert(t('error.saveFailed'));
+            }
+        }
+        
+        async function deleteNote(id) {
+            if (!confirm('确定要删除这条笔记吗？')) return;
+            
+            try {
+                const response = await fetch(`${API_URL}/notes/${id}`, { method: 'DELETE' });
+                if (response.ok) {
+                    loadNotes();
+                    showToast(t('msg.noteDeleted'));
+                }
+            } catch (error) {
+                console.error('Error deleting note:', error);
+            }
+        }
+        
+        async function exportData() {
+            try {
+                const response = await fetch(`${API_URL}/export`);
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `knowforge-export-${new Date().toISOString().split('T')[0]}.json`;
+                a.click();
+                window.URL.revokeObjectURL(url);
+                showToast('导出成功');
+            } catch (error) {
+                console.error('Export failed:', error);
+                alert('导出失败');
+            }
+        }
+        
+        async function importData(input) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            try {
+                const text = await file.text();
+                const data = JSON.parse(text);
+                
+                const response = await fetch(`${API_URL}/import`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    loadNotes();
+                    showToast(`成功导入 ${result.imported} 条笔记`);
+                }
+            } catch (error) {
+                console.error('Import failed:', error);
+                alert('导入失败');
+            }
+            
+            input.value = '';
+        }
+        
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-4 right-4 px-6 py-3 rounded-lg text-white z-50';
+            toast.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSettings();
+            loadNotes();
+        });
+        
+        // Close modal on outside click
+        document.getElementById('modal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('modal')) closeModal();
+        });
+        document.getElementById('settings-panel').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('settings-panel')) toggleSettings();
+        });
+    </script>
+</body>
+</html>
