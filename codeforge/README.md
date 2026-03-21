@@ -1,135 +1,152 @@
-# CodeForge - AI Programming Assistant
+# 🤖 CodeForge
 
-> 为开发者打造的AI编程助手
-> 让个人开发者拥有AI辅助编程的超能力
+> 开源的 AI 编程助手，VSCode 插件
 
----
-
-## 🎯 产品定位
-
-**一句话**: 开源的AI编程助手，让独立开发者也能享受企业级AI辅助
-
-**核心价值**:
-- 🚀 代码自动生成与补全
-- 🧠 智能代码审查与优化
-- 📚 上下文感知的代码理解
-- 🔧 多语言、多框架支持
+<p align="center">
+  <img src="../docs/screenshots/codeforge-screenshot.png" alt="CodeForge Screenshot" width="800">
+</p>
 
 ---
 
-## 🏗️ 架构设计
+## ✨ 功能特性
 
+### 🎯 AI 辅助编程
+- **代码生成** - 根据描述自动生成代码
+- **代码解释** - 解释选中代码的含义
+- **代码审查** - 发现潜在问题和优化建议
+- **代码重构** - 自动重构和改进代码
+
+### 🌍 多语言支持
+- 中文 / English
+- 根据 VSCode 语言自动切换
+
+### 📊 使用统计
+- 总请求数
+- Token 使用量
+- 各功能使用次数
+
+### ⚡ 性能优化
+- 响应缓存
+- 取消操作支持
+- 错误重试机制
+
+---
+
+## 🚀 快速开始
+
+### 安装
+
+```bash
+cd codeforge
+npm install
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                     🖥️ 客户端层                              │
-│   VSCode Extension / Web IDE / CLI                          │
-└───────────────────────┬─────────────────────────────────────┘
-                        │
-┌───────────────────────▼─────────────────────────────────────┐
-│                     🌐 API网关层                             │
-│   请求路由 / 负载均衡 / 认证授权                               │
-└───────────────────────┬─────────────────────────────────────┘
-                        │
-┌───────────────────────▼─────────────────────────────────────┐
-│                     🧠 AI引擎层                              │
-│   代码生成 / 代码审查 / 代码解释 / 代码重构                    │
-└───────────────────────┬─────────────────────────────────────┘
-                        │
-┌───────────────────────▼─────────────────────────────────────┐
-│                     💾 数据层                                │
-│   代码向量库 / 用户配置 / 使用统计                            │
-└─────────────────────────────────────────────────────────────┘
+
+### 编译
+
+```bash
+npm run compile
 ```
+
+### 运行
+
+在 VSCode 中：
+1. 按 `F5` 打开扩展开发窗口
+2. 配置 OpenAI API Key
+3. 开始使用
 
 ---
 
-## 📦 功能模块
+## 📖 使用指南
 
-### 1. 代码生成 (CodeGen)
-- [ ] 自然语言转代码
-- [ ] 代码补全
-- [ ] 函数生成
-- [ ] 单元测试生成
+### 配置 API Key
 
-### 2. 代码审查 (CodeReview)
-- [ ] 潜在Bug检测
-- [ ] 性能优化建议
-- [ ] 安全漏洞扫描
-- [ ] 代码风格检查
+1. 打开 VSCode 设置
+2. 搜索 "CodeForge"
+3. 填入 OpenAI API Key
 
-### 3. 代码解释 (CodeExplain)
-- [ ] 复杂代码解释
-- [ ] 算法原理说明
-- [ ] 代码注释生成
-- [ ] 文档自动生成
+### 快捷键
 
-### 4. 代码重构 (CodeRefactor)
-- [ ] 智能重构建议
-- [ ] 代码简化
-- [ ] 设计模式应用
-- [ ] 技术债务识别
+| 功能 | Windows/Linux | Mac |
+|------|---------------|-----|
+| 生成代码 | `Ctrl+Shift+G` | `Cmd+Shift+G` |
+| 解释代码 | `Ctrl+Shift+E` | `Cmd+Shift+E` |
+
+### 命令面板
+
+按 `Ctrl+Shift+P` (Mac: `Cmd+Shift+P`)，输入：
+- `CodeForge: Generate Code` - 生成代码
+- `CodeForge: Explain Code` - 解释代码
+- `CodeForge: Review Code` - 审查代码
+- `CodeForge: Refactor Code` - 重构代码
+- `CodeForge: View Statistics` - 查看统计
 
 ---
 
 ## 🛠️ 技术栈
 
-### 前端 (VSCode Extension)
-- TypeScript
-- VSCode Extension API
-- WebView UI
-
-### 后端
-- Node.js + Express
-- OpenAI API / 本地LLM
-- Vector DB (代码向量存储)
-
-### AI模型
-- GPT-4 / Claude (云端)
-- CodeLlama / StarCoder (本地)
-- 代码Embedding模型
+- **语言**: TypeScript
+- **框架**: VSCode Extension API
+- **AI**: OpenAI API
+- **HTTP**: Node.js https 模块
 
 ---
 
-## 🚀 开发计划
+## 📁 项目结构
 
-### MVP (Week 1)
-- [ ] VSCode插件框架
-- [ ] 基础代码补全
-- [ ] OpenAI API集成
-- [ ] 简单代码解释
-
-### Phase 2 (Week 2-3)
-- [ ] 代码审查功能
-- [ ] 代码生成优化
-- [ ] 本地LLM支持
-- [ ] 用户配置系统
-
-### Phase 3 (Week 4)
-- [ ] 代码向量库
-- [ ] 项目上下文理解
-- [ ] 团队协作功能
-- [ ] 使用统计分析
+```
+codeforge/
+├── src/
+│   ├── extension.ts    # 主扩展代码
+│   └── i18n.ts        # 多语言支持
+├── out/               # 编译输出
+├── package.json       # 扩展配置
+└── README.md
+```
 
 ---
 
-## 💡 差异化策略
+## 🔧 配置项
 
-| 竞品 | 局限 | CodeForge优势 |
-|------|------|--------------|
-| GitHub Copilot | 闭源、贵 | 开源、可定制 |
-| Cursor | 单点工具 | 生态整合 |
-| OpenCode | 刚起步 | 更懂中国开发者 |
-| Codeium | 通用 | 垂直场景优化 |
+在 VSCode 设置中配置：
 
----
-
-## 📊 成功指标
-
-- VSCode插件安装量 > 1000
-- 日活跃用户 > 200
-- 代码接受率 > 60%
-- 用户满意度 > 4.5/5
+```json
+{
+  "codeforge.apiKey": "your-openai-api-key",
+  "codeforge.model": "gpt-3.5-turbo",
+  "codeforge.temperature": 0.7,
+  "codeforge.cacheEnabled": true,
+  "codeforge.showStats": true
+}
+```
 
 ---
 
-*开发中...*
+## 🐛 常见问题
+
+### 如何获取 OpenAI API Key？
+
+访问 https://platform.openai.com/api-keys 创建
+
+### 支持哪些模型？
+
+- gpt-3.5-turbo (推荐)
+- gpt-4
+- gpt-4-turbo-preview
+
+### 代码生成失败？
+
+1. 检查 API Key 是否正确
+2. 检查网络连接
+3. 查看 VSCode 输出面板中的错误信息
+
+---
+
+## 📄 许可证
+
+[MIT](../LICENSE) © tinyfish
+
+---
+
+<p align="center">
+  <a href="https://github.com/Y1-q-1Q/devforge">← 返回 DevForge</a>
+</p>

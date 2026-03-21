@@ -1,199 +1,213 @@
-# DeployForge - 一键部署工具
+# 🚀 DeployForge
 
-> 让部署像点击按钮一样简单
-
----
-
-## 🎯 产品定位
-
-**一句话**: 为独立开发者打造的一键部署解决方案
-
-**核心价值**:
-- 零配置部署
-- 多平台支持
-- 自动SSL证书
-- 回滚机制
-- 成本优化
+> 一键部署工具，零配置上线你的项目
 
 ---
 
-## 🏗️ 架构设计
+## ✨ 功能特性
 
+### ☁️ 多平台支持
+
+**国外平台**:
+- Vercel - 前端项目
+- Netlify - 静态网站
+- GitHub Pages - 免费托管
+- Railway - 全栈应用
+- Render - 全栈应用
+
+**国内平台**:
+- 阿里云 OSS
+- 腾讯云 COS
+- 又拍云
+
+**自建服务器**:
+- SSH 部署
+- Docker 部署
+
+### 🔍 自动检测
+- 自动识别项目类型
+- 自动检测构建命令
+- 自动识别输出目录
+
+### 🌍 多语言支持
+- 中文 / English
+- `--language` 选项
+
+### ⚡ 快速部署
+- 交互式配置
+- 一键部署
+- 进度显示
+
+---
+
+## 🚀 快速开始
+
+### 安装
+
+```bash
+cd deployforge
+npm install
+npm link
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                     🖥️ 部署控制台                            │
-│   项目配置 → 选择平台 → 一键部署 → 监控管理                   │
-└───────────────────────┬─────────────────────────────────────┘
-                        │
-┌───────────────────────▼─────────────────────────────────────┐
-│                     🚀 部署引擎                              │
-│   构建 → 打包 → 上传 → 配置 → 启动 → 验证                     │
-└───────────────────────┬─────────────────────────────────────┘
-                        │
-┌───────────────────────▼─────────────────────────────────────┐
-│                     ☁️ 云平台适配器                           │
-│   Vercel / Netlify / GitHub Pages / AWS / 阿里云 / 腾讯云     │
-└─────────────────────────────────────────────────────────────┘
+
+### 初始化配置
+
+在项目目录中运行：
+
+```bash
+deployforge init
+```
+
+按提示选择：
+1. 项目名称
+2. 部署平台
+3. 构建命令
+4. 输出目录
+
+### 一键部署
+
+```bash
+deployforge deploy
 ```
 
 ---
 
-## 📦 功能模块
+## 📖 使用指南
 
-### 1. 项目检测
-- [ ] 自动识别项目类型
-  - React/Vue/Angular
-  - Next.js/Nuxt.js
-  - Static Site
-  - Node.js API
-  - Docker
-- [ ] 自动识别构建命令
-- [ ] 自动识别输出目录
+### 查看支持的平台
 
-### 2. 多平台部署
-- [ ] **国外平台**
-  - Vercel (推荐前端)
-  - Netlify (推荐静态)
-  - GitHub Pages (免费)
-  - Railway (推荐后端)
-  - Render (全栈)
-  
-- [ ] **国内平台**
-  - 阿里云 OSS/ECS
-  - 腾讯云 COS/CVM
-  - 又拍云
-  - 七牛云
+```bash
+# 中文
+deployforge platforms --language zh
 
-- [ ] **自建服务器**
-  - SSH部署
-  - Docker部署
-  - PM2管理
+# English
+deployforge platforms --language en
+```
 
-### 3. 域名与SSL
-- [ ] 自动配置域名
-- [ ] 自动申请SSL证书 (Let's Encrypt)
-- [ ] 自动续期
-- [ ] CDN配置
+### 初始化项目
 
-### 4. 监控与日志
-- [ ] 部署状态监控
-- [ ] 实时日志查看
-- [ ] 错误告警
-- [ ] 性能监控
+```bash
+deployforge init
+```
 
-### 5. 高级功能
-- [ ] 蓝绿部署
-- [ ] 金丝雀发布
-- [ ] 一键回滚
-- [ ] 数据库迁移
-- [ ] 环境变量管理
+选项：
+- `-l, --language <lang>` - 设置语言 (zh/en)
+
+### 部署项目
+
+```bash
+# 使用配置的平台
+deployforge deploy
+
+# 指定平台
+deployforge deploy --platform vercel
+
+# 指定服务器（SSH）
+deployforge deploy --server my-server.com
+```
+
+### 管理配置
+
+```bash
+# 查看配置
+deployforge config --list
+
+# 获取配置项
+deployforge config --get platform
+
+# 设置配置项
+deployforge config --set platform=vercel
+```
 
 ---
 
 ## 🛠️ 技术栈
 
-### CLI工具
-- Node.js + Commander.js
-- Inquirer.js (交互提示)
-- Chalk (彩色输出)
-- Ora (加载动画)
-
-### 核心功能
-- Archiver (打包)
-- SSH2 (远程部署)
-- Dockerode (Docker操作)
-- Axios (API调用)
+- **语言**: Node.js
+- **CLI**: Commander.js
+- **交互**: Readline
+- **压缩**: Archiver
+- **SSH**: SSH2
 
 ---
 
-## 💡 典型使用场景
+## 📁 项目结构
 
-### 场景1: 前端项目部署
+```
+deployforge/
+├── bin/
+│   └── deployforge.js  # CLI 入口
+├── lib/
+│   └── index.js       # 核心逻辑
+├── package.json
+└── README.md
+```
+
+---
+
+## 🔧 配置文件
+
+配置文件 `deployforge.json`:
+
+```json
+{
+  "name": "my-project",
+  "platform": "vercel",
+  "buildCommand": "npm run build",
+  "outputDir": "dist",
+  "language": "zh"
+}
+```
+
+### SSH 配置
+
+```json
+{
+  "platform": "ssh",
+  "ssh": {
+    "host": "my-server.com",
+    "username": "root",
+    "port": 22,
+    "deployPath": "/var/www/html"
+  }
+}
+```
+
+---
+
+## 🐛 常见问题
+
+### 部署失败？
+
+1. 检查平台 CLI 是否已安装
+2. 检查配置是否正确
+3. 检查网络连接
+
+### 如何切换语言？
+
 ```bash
-cd my-react-app
-deployforge deploy
+# 初始化时设置
+deployforge init --language en
 
-? 选择平台: Vercel
-? 自定义域名: myapp.com
-✓ 构建完成
-✓ 部署成功
-✓ SSL证书已配置
-
-🔗 https://myapp.com
+# 或修改配置文件
 ```
 
-### 场景2: 全栈项目部署
-```bash
-cd my-fullstack-app
-deployforge deploy
+### 支持哪些项目类型？
 
-? 选择平台: Railway
-? 数据库: PostgreSQL
-✓ 后端部署成功
-✓ 前端部署成功
-✓ 数据库已配置
-
-🔗 https://myapp.railway.app
-```
-
-### 场景3: 自建服务器部署
-```bash
-deployforge deploy --server my-server.com
-
-? 部署方式: Docker
-✓ 构建镜像
-✓ 上传到服务器
-✓ 启动容器
-✓ 健康检查通过
-
-🔗 https://my-server.com
-```
+自动检测：
+- React / Vue / Angular
+- Next.js / Nuxt.js
+- Astro / Gatsby / Hexo
+- 静态网站
 
 ---
 
-## 🚀 开发计划
+## 📄 许可证
 
-### MVP (Week 1)
-- [ ] CLI框架搭建
-- [ ] Vercel/Netlify适配
-- [ ] 基础部署流程
-- [ ] 配置文件支持
-
-### Phase 2 (Week 2)
-- [ ] 国内云平台适配
-- [ ] 自建服务器支持
-- [ ] 域名自动配置
-- [ ] SSL自动申请
-
-### Phase 3 (Week 3)
-- [ ] 监控面板
-- [ ] 回滚功能
-- [ ] 多环境管理
-- [ ] CI/CD集成
+[MIT](../LICENSE) © tinyfish
 
 ---
 
-## 📊 与 DevForge 生态整合
-
-```
-KnowForge ──┐
-             ├──→ FlowForge ──→ DeployForge
-CodeForge ──┘         ↓              ↓
-                  自动化测试    一键部署上线
-```
-
-**联动场景**:
-- CodeForge 生成代码 → FlowForge 触发测试 → DeployForge 自动部署
-- KnowForge 记录部署配置 → DeployForge 读取配置 → 快速复现环境
-
----
-
-## 🎯 成功指标
-
-- 部署成功率 > 95%
-- 平均部署时间 < 3分钟
-- 用户满意度 > 4.5/5
-
----
-
-*设计中...*
+<p align="center">
+  <a href="https://github.com/Y1-q-1Q/devforge">← 返回 DevForge</a>
+</p>
