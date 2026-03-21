@@ -1,0 +1,67 @@
+{
+  "app": {
+    "name": "KnowForge",
+    "tagline": "你的第二大脑"
+  },
+  "nav": {
+    "allNotes": "所有笔记",
+    "tags": "标签",
+    "starred": "收藏",
+    "analytics": "统计"
+  },
+  "btn": {
+    "newNote": "新建笔记",
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "edit": "编辑",
+    "search": "搜索"
+  },
+  "placeholder": {
+    "search": "搜索笔记...",
+    "title": "输入笔记标题...",
+    "content": "输入笔记内容（支持Markdown）...",
+    "tags": "输入标签，用逗号分隔..."
+  },
+  "msg": {
+    "noteCreated": "笔记创建成功",
+    "noteUpdated": "笔记更新成功",
+    "noteDeleted": "笔记删除成功",
+    "noNotes": "还没有笔记，创建你的第一条笔记吧！",
+    "loading": "加载中...",
+    "saving": "保存中..."
+  },
+  "error": {
+    "noTitle": "标题不能为空",
+    "noContent": "内容不能为空",
+    "titleTooLong": "标题不能超过200个字符",
+    "contentTooLong": "内容不能超过100KB",
+    "noteNotFound": "笔记不存在",
+    "invalidId": "无效的笔记ID",
+    "saveFailed": "保存失败",
+    "loadFailed": "加载失败"
+  },
+  "modal": {
+    "addTitle": "新建笔记",
+    "editTitle": "编辑笔记",
+    "deleteConfirm": "确定要删除这条笔记吗？",
+    "unsavedChanges": "你有未保存的更改，确定要离开吗？"
+  },
+  "settings": {
+    "title": "设置",
+    "appearance": "外观",
+    "language": "语言",
+    "theme": "主题",
+    "editor": "编辑器",
+    "fontSize": "字体大小",
+    "fontFamily": "字体",
+    "autoSave": "自动保存",
+    "backup": "备份",
+    "backupCount": "保留备份数量"
+  },
+  "theme": {
+    "dark": "深色",
+    "light": "浅色",
+    "system": "跟随系统"
+  }
+}

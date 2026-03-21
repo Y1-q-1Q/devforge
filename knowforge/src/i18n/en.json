@@ -1,0 +1,67 @@
+{
+  "app": {
+    "name": "KnowForge",
+    "tagline": "Your second brain"
+  },
+  "nav": {
+    "allNotes": "All Notes",
+    "tags": "Tags",
+    "starred": "Starred",
+    "analytics": "Analytics"
+  },
+  "btn": {
+    "newNote": "New Note",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search"
+  },
+  "placeholder": {
+    "search": "Search notes...",
+    "title": "Enter note title...",
+    "content": "Enter note content (Markdown supported)...",
+    "tags": "Enter tags separated by commas..."
+  },
+  "msg": {
+    "noteCreated": "Note created successfully",
+    "noteUpdated": "Note updated successfully",
+    "noteDeleted": "Note deleted successfully",
+    "noNotes": "No notes yet. Create your first note!",
+    "loading": "Loading...",
+    "saving": "Saving..."
+  },
+  "error": {
+    "noTitle": "Title is required",
+    "noContent": "Content is required",
+    "titleTooLong": "Title must be less than 200 characters",
+    "contentTooLong": "Content must be less than 100KB",
+    "noteNotFound": "Note not found",
+    "invalidId": "Invalid note ID",
+    "saveFailed": "Failed to save note",
+    "loadFailed": "Failed to load notes"
+  },
+  "modal": {
+    "addTitle": "Add New Note",
+    "editTitle": "Edit Note",
+    "deleteConfirm": "Are you sure you want to delete this note?",
+    "unsavedChanges": "You have unsaved changes. Are you sure you want to leave?"
+  },
+  "settings": {
+    "title": "Settings",
+    "appearance": "Appearance",
+    "language": "Language",
+    "theme": "Theme",
+    "editor": "Editor",
+    "fontSize": "Font Size",
+    "fontFamily": "Font Family",
+    "autoSave": "Auto Save",
+    "backup": "Backup",
+    "backupCount": "Number of backups to keep"
+  },
+  "theme": {
+    "dark": "Dark",
+    "light": "Light",
+    "system": "System"
+  }
+}
