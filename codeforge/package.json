@@ -1,0 +1,88 @@
+{
+  "name": "codeforge",
+  "displayName": "CodeForge - AI Programming Assistant",
+  "description": "Open source AI programming assistant for developers",
+  "version": "0.1.0",
+  "publisher": "tinyfish",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Machine Learning",
+    "Programming Languages",
+    "Snippets"
+  ],
+  "keywords": [
+    "ai",
+    "code",
+    "assistant",
+    "copilot",
+    "codegen"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "codeforge.generateCode",
+        "title": "Generate Code",
+        "category": "CodeForge"
+      },
+      {
+        "command": "codeforge.explainCode",
+        "title": "Explain Code",
+        "category": "CodeForge"
+      },
+      {
+        "command": "codeforge.reviewCode",
+        "title": "Review Code",
+        "category": "CodeForge"
+      },
+      {
+        "command": "codeforge.refactorCode",
+        "title": "Refactor Code",
+        "category": "CodeForge"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "codeforge.generateCode",
+        "key": "ctrl+shift+g",
+        "mac": "cmd+shift+g"
+      },
+      {
+        "command": "codeforge.explainCode",
+        "key": "ctrl+shift+e",
+        "mac": "cmd+shift+e"
+      }
+    ],
+    "configuration": {
+      "title": "CodeForge",
+      "properties": {
+        "codeforge.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "OpenAI API Key",
+          "scope": "application"
+        },
+        "codeforge.model": {
+          "type": "string",
+          "default": "gpt-3.5-turbo",
+          "description": "AI Model to use"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "16.x",
+    "typescript": "^4.9.4"
+  }
+}
