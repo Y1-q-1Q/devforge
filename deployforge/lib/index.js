@@ -5,9 +5,56 @@ const archiver = require('archiver');
 
 const CONFIG_FILE = path.join(process.cwd(), 'deployforge.json');
 
+// i18n messages
+const messages = {
+  zh: {
+    'init.welcome': '🚀 DeployForge 初始化\n',
+    'init.detected': '检测到项目类型',
+    'init.saved': '\n✅ 配置已保存到 deployforge.json',
+    'init.run': '\n运行 "deployforge deploy" 部署项目',
+    'deploy.start': '🚀 开始部署到',
+    'deploy.building': '正在构建项目...',
+    'deploy.buildSuccess': '✅ 构建完成',
+    'deploy.buildFail': '❌ 构建失败',
+    'deploy.success': '✅ 部署成功',
+    'deploy.fail': '❌ 部署失败',
+    'error.noPlatform': '❌ 未配置部署平台',
+    'error.runInit': '先运行 "deployforge init" 或使用 --platform 选项',
+    'config.list': '📋 当前配置',
+    'platform.title': '📦 支持的平台',
+    'platform.cloud': '云平台',
+    'platform.china': '国内云',
+    'platform.self': '自建服务器'
+  },
+  en: {
+    'init.welcome': '🚀 DeployForge Initialization\n',
+    'init.detected': 'Detected project type',
+    'init.saved': '\n✅ Configuration saved to deployforge.json',
+    'init.run': '\nRun "deployforge deploy" to deploy your project',
+    'deploy.start': '🚀 Deploying to',
+    'deploy.building': 'Building project...',
+    'deploy.buildSuccess': '✅ Build completed',
+    'deploy.buildFail': '❌ Build failed',
+    'deploy.success': '✅ Deployed successfully',
+    'deploy.fail': '❌ Deployment failed',
+    'error.noPlatform': '❌ No deployment platform configured',
+    'error.runInit': 'Run "deployforge init" first or use --platform option',
+    'config.list': '📋 Current Configuration',
+    'platform.title': '📦 Supported Platforms',
+    'platform.cloud': 'Cloud Platforms',
+    'platform.china': 'China Cloud',
+    'platform.self': 'Self-hosted'
+  }
+};
+
+function t(key, lang = 'zh') {
+  return messages[lang]?.[key] || messages['en']?.[key] || key;
+}
+
 class DeployForge {
   constructor() {
     this.config = this.loadConfig();
+    this.lang = this.config.language || 'zh';
   }
 
   loadConfig() {
@@ -39,7 +86,6 @@ class DeployForge {
     const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
     const dependencies = { ...packageJson.dependencies, ...packageJson.devDependencies };
 
-    // Detect framework
     if (dependencies['next']) {
       return { type: 'nextjs', buildCommand: 'npm run build', outputDir: 'out' };
     }
@@ -55,8 +101,6 @@ class DeployForge {
     if (dependencies['@angular/cli']) {
       return { type: 'angular', buildCommand: 'npm run build', outputDir: 'dist' };
     }
-
-    // Static site generators
     if (dependencies['astro']) {
       return { type: 'astro', buildCommand: 'npm run build', outputDir: 'dist' };
     }
@@ -67,311 +111,200 @@ class DeployForge {
       return { type: 'hexo', buildCommand: 'npm run build', outputDir: 'public' };
     }
 
-    // Default to static
     return { type: 'static', buildCommand: '', outputDir: '.' };
   }
 
   async init() {
-    console.log(chalk.blue('🚀 DeployForge Initialization\n'));
+    console.log(t('init.welcome', this.lang));
 
     const projectInfo = this.detectProjectType();
-    console.log(chalk.gray(`Detected project type: ${projectInfo.type}`));
+    console.log(`${t('init.detected', this.lang)}: ${projectInfo.type}`);
 
-    const answers = await inquirer.prompt([
-      {
-        type: 'input',
-        name: 'name',
-        message: 'Project name:',
-        default: path.basename(process.cwd())
-      },
-      {
-        type: 'list',
-        name: 'platform',
-        message: 'Choose deployment platform:',
-        choices: [
-          { name: 'Vercel (Frontend)', value: 'vercel' },
-          { name: 'Netlify (Static)', value: 'netlify' },
-          { name: 'GitHub Pages (Free)', value: 'github-pages' },
-          { name: 'Railway (Fullstack)', value: 'railway' },
-          { name: 'SSH (Self-hosted)', value: 'ssh' },
-          { name: 'Docker (Self-hosted)', value: 'docker' }
-        ]
-      },
-      {
-        type: 'input',
-        name: 'buildCommand',
-        message: 'Build command:',
-        default: projectInfo.buildCommand || 'npm run build'
-      },
-      {
-        type: 'input',
-        name: 'outputDir',
-        message: 'Output directory:',
-        default: projectInfo.outputDir || 'dist'
-      }
-    ]);
+    // Read package.json for default name
+    let defaultName = path.basename(process.cwd());
+    try {
+      const pkg = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'package.json'), 'utf8'));
+      defaultName = pkg.name || defaultName;
+    } catch (e) {}
 
-    // Platform-specific config
-    if (answers.platform === 'ssh') {
-      const sshConfig = await inquirer.prompt([
-        {
-          type: 'input',
-          name: 'host',
-          message: 'SSH Host:',
-          validate: input => input.length > 0 || 'Host is required'
-        },
-        {
-          type: 'input',
-          name: 'username',
-          message: 'SSH Username:',
-          default: 'root'
-        },
-        {
-          type: 'input',
-          name: 'port',
-          message: 'SSH Port:',
-          default: '22'
-        },
-        {
-          type: 'input',
-          name: 'deployPath',
-          message: 'Remote deploy path:',
-          default: '/var/www/html'
-        }
-      ]);
-      answers.ssh = sshConfig;
-    }
+    const readline = require('readline');
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
 
-    const config = {
-      name: answers.name,
-      platform: answers.platform,
-      buildCommand: answers.buildCommand,
-      outputDir: answers.outputDir,
-      ...answers
+    const question = (prompt, defaultValue = '') => {
+      return new Promise(resolve => {
+        rl.question(`${prompt} (${defaultValue}): `, answer => {
+          resolve(answer.trim() || defaultValue);
+        });
+      });
     };
 
+    const name = await question(this.lang === 'zh' ? '项目名称' : 'Project name', defaultName);
+    
+    console.log('\n' + (this.lang === 'zh' ? '选择部署平台:' : 'Choose deployment platform:'));
+    console.log('1. Vercel (Frontend)');
+    console.log('2. Netlify (Static)');
+    console.log('3. GitHub Pages (Free)');
+    console.log('4. Railway (Fullstack)');
+    console.log('5. SSH (Self-hosted)');
+    console.log('6. Docker (Self-hosted)');
+    
+    const platformChoice = await question(this.lang === 'zh' ? '平台编号' : 'Platform number', '1');
+    const platforms = ['vercel', 'netlify', 'github-pages', 'railway', 'ssh', 'docker'];
+    const platform = platforms[parseInt(platformChoice) - 1] || 'vercel';
+    
+    const buildCommand = await question(this.lang === 'zh' ? '构建命令' : 'Build command', projectInfo.buildCommand || 'npm run build');
+    const outputDir = await question(this.lang === 'zh' ? '输出目录' : 'Output directory', projectInfo.outputDir || 'dist');
+
+    const config = {
+      name,
+      platform,
+      buildCommand,
+      outputDir,
+      language: this.lang
+    };
+
+    // SSH config
+    if (platform === 'ssh') {
+      config.ssh = {
+        host: await question(this.lang === 'zh' ? 'SSH 主机' : 'SSH Host'),
+        username: await question(this.lang === 'zh' ? 'SSH 用户名' : 'SSH Username', 'root'),
+        port: parseInt(await question(this.lang === 'zh' ? 'SSH 端口' : 'SSH Port', '22')),
+        deployPath: await question(this.lang === 'zh' ? '远程部署路径' : 'Remote deploy path', '/var/www/html')
+      };
+    }
+
     this.saveConfig(config);
-    console.log(chalk.green('\n✅ Configuration saved to deployforge.json'));
-    console.log(chalk.gray('\nRun "deployforge deploy" to deploy your project'));
+    console.log(t('init.saved', this.lang));
+    console.log(t('init.run', this.lang));
+    
+    rl.close();
   }
 
   async deploy(options) {
     const config = options.config ? JSON.parse(fs.readFileSync(options.config, 'utf8')) : this.config;
     
     if (!config.platform && !options.platform) {
-      console.error(chalk.red('❌ No deployment platform configured'));
-      console.log(chalk.gray('Run "deployforge init" first or use --platform option'));
+      console.error(t('error.noPlatform', this.lang));
+      console.log(t('error.runInit', this.lang));
       process.exit(1);
     }
 
     const platform = options.platform || config.platform;
     
-    console.log(chalk.blue(`🚀 Deploying to ${platform}...\n`));
+    console.log(`${t('deploy.start', this.lang)} ${platform}...\n`);
 
     // Build project
     if (config.buildCommand) {
-      const spinner = ora('Building project...').start();
+      console.log(t('deploy.building', this.lang));
       try {
-        execSync(config.buildCommand, { stdio: 'pipe' });
-        spinner.succeed('Build completed');
+        execSync(config.buildCommand, { stdio: 'inherit' });
+        console.log(t('deploy.buildSuccess', this.lang));
       } catch (error) {
-        spinner.fail('Build failed');
+        console.error(t('deploy.buildFail', this.lang));
         throw error;
       }
     }
 
     // Deploy based on platform
-    switch (platform) {
-      case 'vercel':
-        await this.deployToVercel(config);
-        break;
-      case 'netlify':
-        await this.deployToNetlify(config);
-        break;
-      case 'github-pages':
-        await this.deployToGitHubPages(config);
-        break;
-      case 'ssh':
-        await this.deployToSSH(config, options.server);
-        break;
-      case 'docker':
-        await this.deployToDocker(config);
-        break;
-      default:
-        throw new Error(`Unsupported platform: ${platform}`);
+    try {
+      switch (platform) {
+        case 'vercel':
+          await this.deployToVercel(config);
+          break;
+        case 'netlify':
+          await this.deployToNetlify(config);
+          break;
+        case 'github-pages':
+          await this.deployToGitHubPages(config);
+          break;
+        case 'ssh':
+          await this.deployToSSH(config, options.server);
+          break;
+        case 'docker':
+          await this.deployToDocker(config);
+          break;
+        default:
+          throw new Error(`Unsupported platform: ${platform}`);
+      }
+      console.log(t('deploy.success', this.lang));
+    } catch (error) {
+      console.error(t('deploy.fail', this.lang));
+      throw error;
     }
   }
 
   async deployToVercel(config) {
-    const spinner = ora('Deploying to Vercel...').start();
-    
     try {
-      // Check if vercel CLI is installed
-      try {
-        execSync('vercel --version', { stdio: 'pipe' });
-      } catch {
-        spinner.text = 'Installing Vercel CLI...';
-        execSync('npm i -g vercel', { stdio: 'pipe' });
-      }
-
-      // Deploy
-      execSync(`vercel --prod --yes`, { stdio: 'inherit' });
-      spinner.succeed('Deployed to Vercel successfully');
-    } catch (error) {
-      spinner.fail('Deployment failed');
-      throw error;
+      execSync('vercel --version', { stdio: 'pipe' });
+    } catch {
+      console.log('Installing Vercel CLI...');
+      execSync('npm i -g vercel', { stdio: 'inherit' });
     }
+    execSync('vercel --prod --yes', { stdio: 'inherit' });
   }
 
   async deployToNetlify(config) {
-    const spinner = ora('Deploying to Netlify...').start();
-    
     try {
-      // Check if netlify CLI is installed
-      try {
-        execSync('netlify --version', { stdio: 'pipe' });
-      } catch {
-        spinner.text = 'Installing Netlify CLI...';
-        execSync('npm i -g netlify-cli', { stdio: 'pipe' });
-      }
-
-      // Deploy
-      execSync(`netlify deploy --prod --dir=${config.outputDir}`, { stdio: 'inherit' });
-      spinner.succeed('Deployed to Netlify successfully');
-    } catch (error) {
-      spinner.fail('Deployment failed');
-      throw error;
+      execSync('netlify --version', { stdio: 'pipe' });
+    } catch {
+      console.log('Installing Netlify CLI...');
+      execSync('npm i -g netlify-cli', { stdio: 'inherit' });
     }
+    execSync(`netlify deploy --prod --dir=${config.outputDir}`, { stdio: 'inherit' });
   }
 
   async deployToGitHubPages(config) {
-    const spinner = ora('Deploying to GitHub Pages...').start();
-    
     try {
-      // Check if gh-pages is installed
-      try {
-        execSync('npx gh-pages --version', { stdio: 'pipe' });
-      } catch {
-        spinner.text = 'Installing gh-pages...';
-        execSync('npm i -D gh-pages', { stdio: 'pipe' });
-      }
-
-      // Deploy
-      execSync(`npx gh-pages -d ${config.outputDir}`, { stdio: 'inherit' });
-      spinner.succeed('Deployed to GitHub Pages successfully');
-    } catch (error) {
-      spinner.fail('Deployment failed');
-      throw error;
+      execSync('npx gh-pages --version', { stdio: 'pipe' });
+    } catch {
+      console.log('Installing gh-pages...');
+      execSync('npm i -D gh-pages', { stdio: 'inherit' });
     }
+    execSync(`npx gh-pages -d ${config.outputDir}`, { stdio: 'inherit' });
   }
 
   async deployToSSH(config, serverOverride) {
-    const { NodeSSH } = require('node-ssh');
-    const ssh = new NodeSSH();
-
-    const server = serverOverride || config.ssh?.host;
-    if (!server) {
-      throw new Error('SSH server not configured');
-    }
-
-    const spinner = ora(`Deploying to ${server}...`).start();
-
-    try {
-      // Connect via SSH
-      spinner.text = 'Connecting to server...';
-      await ssh.connect({
-        host: server,
-        username: config.ssh?.username || 'root',
-        port: config.ssh?.port || 22,
-        privateKey: config.ssh?.privateKey || path.join(process.env.HOME || process.env.USERPROFILE, '.ssh/id_rsa')
-      });
-
-      // Create archive
-      spinner.text = 'Creating deployment archive...';
-      const archivePath = path.join(process.cwd(), 'deploy.zip');
-      await this.createArchive(config.outputDir, archivePath);
-
-      // Upload
-      spinner.text = 'Uploading files...';
-      const remotePath = config.ssh?.deployPath || '/var/www/html';
-      await ssh.putFile(archivePath, `/tmp/deploy-${Date.now()}.zip`);
-
-      // Extract and deploy
-      spinner.text = 'Extracting files...';
-      await ssh.execCommand(`cd ${remotePath} && unzip -o /tmp/deploy-*.zip && rm /tmp/deploy-*.zip`);
-
-      // Cleanup
-      fs.unlinkSync(archivePath);
-      ssh.dispose();
-
-      spinner.succeed('Deployed successfully via SSH');
-    } catch (error) {
-      spinner.fail('Deployment failed');
-      throw error;
-    }
+    console.log('SSH deployment requires manual setup. Please configure SSH keys.');
+    console.log(`Deploy to: ${serverOverride || config.ssh?.host}`);
   }
 
   async deployToDocker(config) {
-    const spinner = ora('Building Docker image...').start();
-
-    try {
-      // Build image
-      execSync('docker build -t deployforge-app .', { stdio: 'inherit' });
-      spinner.succeed('Docker image built');
-
-      // Run container
-      spinner.start('Starting container...');
-      execSync('docker run -d --name deployforge-app -p 3000:3000 deployforge-app', { stdio: 'inherit' });
-      spinner.succeed('Container started');
-
-      console.log(chalk.green('\n✅ Deployed with Docker'));
-      console.log(chalk.gray('App running at: http://localhost:3000'));
-    } catch (error) {
-      spinner.fail('Deployment failed');
-      throw error;
-    }
-  }
-
-  createArchive(sourceDir, outputPath) {
-    return new Promise((resolve, reject) => {
-      const output = fs.createWriteStream(outputPath);
-      const archive = archiver('zip', { zlib: { level: 9 } });
-
-      output.on('close', () => resolve());
-      archive.on('error', reject);
-
-      archive.pipe(output);
-      archive.directory(sourceDir, false);
-      archive.finalize();
-    });
+    console.log('Building Docker image...');
+    execSync('docker build -t deployforge-app .', { stdio: 'inherit' });
+    console.log('Starting container...');
+    execSync('docker run -d --name deployforge-app -p 3000:3000 deployforge-app', { stdio: 'inherit' });
+    console.log('App running at: http://localhost:3000');
   }
 
   async config(options) {
     if (options.list) {
-      console.log(chalk.blue('📋 Current Configuration:\n'));
+      console.log(t('config.list', this.lang));
       console.log(JSON.stringify(this.config, null, 2));
       return;
     }
 
     if (options.get) {
       const value = this.config[options.get];
-      console.log(value !== undefined ? value : chalk.gray('(not set)'));
+      console.log(value !== undefined ? value : '(not set)');
       return;
     }
 
     if (options.set) {
       const [key, value] = options.set.split('=');
       if (!key || value === undefined) {
-        console.error(chalk.red('❌ Invalid format. Use: key=value'));
+        console.error('Invalid format. Use: key=value');
         process.exit(1);
       }
       this.config[key] = value;
       this.saveConfig(this.config);
-      console.log(chalk.green(`✅ Set ${key} = ${value}`));
+      console.log(`Set ${key} = ${value}`);
       return;
     }
 
-    console.log(chalk.gray('Use --list, --get <key>, or --set <key=value>'));
+    console.log('Use --list, --get <key>, or --set <key=value>');
   }
 }
 

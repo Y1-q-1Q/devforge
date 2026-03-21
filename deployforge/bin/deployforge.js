@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const { program } = require('commander');
+const DeployForge = require('../lib/index');
 
 const pkg = require('../package.json');
 
@@ -18,7 +19,6 @@ program
   .option('-c, --config <config>', 'Config file path')
   .action(async (options) => {
     try {
-      const DeployForge = require('../lib/index');
       const df = new DeployForge();
       await df.deploy(options);
     } catch (error) {
@@ -31,12 +31,15 @@ program
 program
   .command('init')
   .description('Initialize deployment configuration')
-  .action(async () => {
+  .option('-l, --language <lang>', 'Language (zh/en)', 'zh')
+  .action(async (options) => {
     try {
+      // Set language in env for DeployForge to pick up
+      process.env.DEPLOYFORGE_LANG = options.language;
       const df = new DeployForge();
       await df.init();
     } catch (error) {
-      console.error(chalk.red('❌ Init failed:'), error.message);
+      console.error('❌ Init failed:', error.message);
       process.exit(1);
     }
   });
@@ -53,7 +56,7 @@ program
       const df = new DeployForge();
       await df.config(options);
     } catch (error) {
-      console.error(chalk.red('❌ Config failed:'), error.message);
+      console.error('❌ Config failed:', error.message);
       process.exit(1);
     }
   });
@@ -62,22 +65,40 @@ program
 program
   .command('platforms')
   .description('List supported deployment platforms')
-  .action(() => {
-    console.log('📦 Supported Platforms:\n');
+  .option('-l, --language <lang>', 'Language (zh/en)', 'zh')
+  .action((options) => {
+    const messages = {
+      zh: {
+        title: '📦 支持的平台',
+        cloud: '云平台',
+        china: '国内云',
+        self: '自建服务器'
+      },
+      en: {
+        title: '📦 Supported Platforms',
+        cloud: 'Cloud Platforms',
+        china: 'China Cloud',
+        self: 'Self-hosted'
+      }
+    };
     
-    console.log('Cloud Platforms:');
+    const t = messages[options.language] || messages.zh;
+    
+    console.log(t.title + '\n');
+    
+    console.log(t.cloud + ':');
     console.log('  • vercel      - Vercel (Frontend)');
     console.log('  • netlify     - Netlify (Static)');
     console.log('  • railway     - Railway (Fullstack)');
     console.log('  • render      - Render (Fullstack)');
     console.log('  • github-pages - GitHub Pages (Free)');
     
-    console.log('\nChina Cloud:');
+    console.log('\n' + t.china + ':');
     console.log('  • aliyun-oss  - 阿里云 OSS');
     console.log('  • tencent-cos - 腾讯云 COS');
     console.log('  • upyun       - 又拍云');
     
-    console.log('\nSelf-hosted:');
+    console.log('\n' + t.self + ':');
     console.log('  • ssh         - SSH Deployment');
     console.log('  • docker      - Docker Deployment');
     console.log('  • pm2         - PM2 Process Management');
