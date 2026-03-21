@@ -363,7 +363,7 @@ export function activate(context: vscode.ExtensionContext) {
                 });
 
                 vscode.window.showInformationMessage(`Code generated! (${tokens} tokens)`);
-            } catch (error) {
+            } catch (error: any) {
                 vscode.window.showErrorMessage(t('error.requestFailed', (error as Error).message));
             }
         });
@@ -422,7 +422,7 @@ export function activate(context: vscode.ExtensionContext) {
                 outputChannel.appendLine('=== Explanation ===');
                 outputChannel.appendLine(content);
                 outputChannel.show();
-            } catch (error) {
+            } catch (error: any) {
                 vscode.window.showErrorMessage(t('error.requestFailed', (error as Error).message));
             }
         });
@@ -474,7 +474,7 @@ export function activate(context: vscode.ExtensionContext) {
                 outputChannel.appendLine('');
                 outputChannel.appendLine(content);
                 outputChannel.show();
-            } catch (error) {
+            } catch (error: any) {
                 vscode.window.showErrorMessage(t('error.requestFailed', (error as Error).message));
             }
         });
@@ -536,7 +536,7 @@ export function activate(context: vscode.ExtensionContext) {
                     language: editor.document.languageId
                 });
                 await vscode.window.showTextDocument(doc, vscode.ViewColumn.Beside);
-            } catch (error) {
+            } catch (error: any) {
                 vscode.window.showErrorMessage(t('error.requestFailed', (error as Error).message));
             }
         });
