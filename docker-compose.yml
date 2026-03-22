@@ -1,0 +1,32 @@
+services:
+  # --- Infrastructure ---
+  postgres:
+    image: postgres:16
+    ports: ["5432:5432"]
+    environment:
+      POSTGRES_PASSWORD: devforge
+      POSTGRES_USER: devforge
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+
+  # --- Application ---
+  knowforge-svc:
+    build: ./services/knowforge
+    ports: ["8001:8001"]
+    environment:
+      KNOWFORGE_DATABASE_URL: postgresql+asyncpg://devforge:devforge@postgres:5432/devforge_knowledge
+      KNOWFORGE_REDIS_URL: redis://redis:6379
+    depends_on: [postgres, redis]
+
+  web:
+    build: ./apps/web
+    ports: ["3000:3000"]
+    depends_on: [knowforge-svc]
+
+volumes:
+  postgres_data:
