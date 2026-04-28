@@ -1,11 +1,7 @@
-﻿# DevForge - Developer Productivity Suite
+# DevForge - Developer Productivity Suite
 
 <p align="center">
-  <img src="docs/assets/logo.png" alt="DevForge Logo" width="120">
-</p>
-
-<p align="center">
-  <strong>璁╀釜浜哄紑鍙戣€呮嫢鏈夊ぇ鍘傜殑寮€鍙戞晥鐜囧拰璧勬簮</strong>
+  <strong>让个人开发者拥有大厂的开发效率和资源</strong>
 </p>
 
 <p align="center">
@@ -22,224 +18,276 @@
 
 ---
 
-## 馃彈锔?鐢熸€佹灦鏋?
+## 🏗️ 生态架构
+
 ```
-鈹屸攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?鈹?                   DevForge 鐢熸€佺郴缁?                     鈹?鈹溾攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?鈹?                                                        鈹?鈹? 鈹屸攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹? 鈹屸攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹? 鈹屸攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?   鈹?鈹? 鈹? KnowForge  鈹? 鈹? CodeForge  鈹? 鈹? FlowForge  鈹?   鈹?鈹? 鈹?  馃 鐭ヨ瘑   鈹? 鈹?  馃 AI    鈹? 鈹?  鈿?鑷姩鍖? 鈹?   鈹?鈹? 鈹?   绠＄悊     鈹? 鈹?  缂栫▼鍔╂墜  鈹? 鈹?  宸ヤ綔娴?   鈹?   鈹?鈹? 鈹斺攢鈹€鈹€鈹€鈹€鈹€鈹攢鈹€鈹€鈹€鈹€鈹€鈹? 鈹斺攢鈹€鈹€鈹€鈹€鈹€鈹攢鈹€鈹€鈹€鈹€鈹€鈹? 鈹斺攢鈹€鈹€鈹€鈹€鈹€鈹攢鈹€鈹€鈹€鈹€鈹€鈹?   鈹?鈹?        鈹?               鈹?               鈹?            鈹?鈹?        鈹斺攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹尖攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?            鈹?鈹?                         鈹?                             鈹?鈹?             鈹屸攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹粹攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?                 鈹?鈹?             鈹?    馃殌 DeployForge     鈹?                 鈹?鈹?             鈹?     涓€閿儴缃?          鈹?                 鈹?鈹?             鈹斺攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?                 鈹?鈹?                                                        鈹?鈹斺攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?```
+┌──────────────────────────────────────────────────────────┐
+│                   DevForge 生态系统                       │
+├──────────────────────────────────────────────────────────┤
+│                                                          │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐              │
+│  │KnowForge │  │CodeForge │  │FlowForge │              │
+│  │  📚知识  │  │  🤖 AI   │  │  ⚙️自动化│              │
+│  │   管理   │  │ 编程助手 │  │  工作流  │              │
+│  └────┬─────┘  └────┬─────┘  └────┬─────┘              │
+│       │             │             │                     │
+│       └─────────────┴─────────────┘                     │
+│                     │                                   │
+│            ┌────────┴────────┐                          │
+│            │  🚀 DeployForge │                          │
+│            │    一键部署     │                          │
+│            └─────────────────┘                          │
+│                                                          │
+└──────────────────────────────────────────────────────────┘
+```
 
 ---
 
-## 鉁?鏍稿績鐗规€?
-- 馃實 **澶氳瑷€鏀寔** - 涓枃/鑻辨枃鍒囨崲
-- 馃帹 **涓婚鍒囨崲** - 娣辫壊/娴呰壊妯″紡
-- 鈿欙笍 **涓€у寲閰嶇疆** - 瀛椾綋澶у皬銆佸揩鎹烽敭绛?- 馃敀 **鏁版嵁闅愮** - 鏈湴浼樺厛锛屾暟鎹嚜涓?- 馃殌 **寮€绠卞嵆鐢?* - 闆堕厤缃揩閫熷紑濮?
+## ✨ 核心特性
+
+- 🌍 **多语言支持** - 中文/英文切换
+- 🎨 **主题切换** - 深色/浅色模式
+- ⚙️ **个性化配置** - 字体大小、快捷键等
+- 🔒 **数据隐私** - 本地优先，数据自主
+- 🚀 **开箱即用** - 零配置快速开始
+
 ---
 
-## 馃摝 妯″潡浠嬬粛
+## 📦 模块介绍
 
-### 馃 KnowForge - 鐭ヨ瘑绠＄悊
+### 📚 KnowForge - 知识管理
 
-> 浣犵殑绗簩澶ц剳锛屼笓涓哄紑鍙戣€呰璁?
-**鍔熻兘鐗规€?*:
-- 鉁?绗旇绠＄悊 + 鍏ㄦ枃鎼滅储
-- 鉁?鏍囩绯荤粺 + 鍒嗙被绠＄悊
-- 鉁?鑷姩澶囦唤锛堜繚鐣?0涓増鏈級
-- 鉁?鏁版嵁瀵煎叆/瀵煎嚭
-- 鉁?澶氳瑷€鏀寔锛堜腑鏂?鑻辨枃锛?- 鉁?娣辫壊/娴呰壊涓婚
-- 鉁?鍝嶅簲寮忕晫闈?
-**蹇€熷紑濮?*:
+> 你的第二大脑，专为开发者设计
+
+**功能特性**:
+- ✅ 笔记管理 + 全文搜索
+- ✅ 标签系统 + 分类管理
+- ✅ 自动备份（保留10个版本）
+- ✅ 数据导入/导出
+- ✅ 多语言支持（中文/英文）
+- ✅ 深色/浅色主题
+- ✅ 响应式界面
+
+**快速开始**:
 ```bash
 cd knowforge
 npm install
 npm start
-# 鎵撳紑 http://localhost:3000
+# 打开 http://localhost:3000
 ```
 
 ---
 
-### 馃 CodeForge - AI 缂栫▼鍔╂墜
+### 🤖 CodeForge - AI 编程助手
 
-> 寮€婧愮殑 AI 缂栫▼鍔╂墜锛孷SCode 鎻掍欢
+> 开源的 AI 编程助手，VSCode 插件
 
-**鍔熻兘鐗规€?*:
-- 鉁?浠ｇ爜鐢熸垚锛圕trl+Shift+G锛?- 鉁?浠ｇ爜瑙ｉ噴锛圕trl+Shift+E锛?- 鉁?浠ｇ爜瀹℃煡
-- 鉁?浠ｇ爜閲嶆瀯
-- 鉁?浣跨敤缁熻
-- 鉁?澶氳瑷€鏀寔
-- 鉁?鍝嶅簲缂撳瓨
+**功能特性**:
+- ✅ 代码生成（Ctrl+Shift+G）
+- ✅ 代码解释（Ctrl+Shift+E）
+- ✅ 代码审查
+- ✅ 代码重构
+- ✅ 使用统计
+- ✅ 多语言支持
+- ✅ 响应缓存
 
-**蹇€熷紑濮?*:
+**快速开始**:
 ```bash
 cd codeforge
 npm install
 npm run compile
-# 鍦?VSCode 涓寜 F5 杩愯
+# 在 VSCode 中按 F5 运行
 ```
 
 ---
 
-### 鈿?FlowForge - 宸ヤ綔娴佽嚜鍔ㄥ寲
+### ⚙️ FlowForge - 工作流自动化
 
-> 璁╅噸澶嶅伐浣滆嚜鍔ㄥ寲鎵ц
+> 让重复工作自动化执行
 
-**鍔熻兘鐗规€?*:
-- 鉁?鍙鍖栧伐浣滄祦缂栨帓
-- 鉁?瀹氭椂瑙﹀彂锛圕ron锛?- 鉁?Webhook 瑙﹀彂
-- 鉁?澶氱鎵ц鑺傜偣锛圫hell/HTTP/寤惰繜/鏃ュ織锛?- 鉁?鎵ц鍘嗗彶璁板綍
-- 鉁?澶氳瑷€鏀寔
-- 鉁?娣辫壊/娴呰壊涓婚
+**功能特性**:
+- ✅ 可视化工作流编排
+- ✅ 定时触发（Cron）
+- ✅ Webhook 触发
+- ✅ 多种执行节点（Shell/HTTP/延迟/日志）
+- ✅ 执行历史记录
+- ✅ 多语言支持
+- ✅ 深色/浅色主题
 
-**蹇€熷紑濮?*:
+**快速开始**:
 ```bash
 cd flowforge
 npm install
 npm start
-# 鎵撳紑 http://localhost:3001
+# 打开 http://localhost:3001
 ```
 
 ---
 
-### 馃殌 DeployForge - 涓€閿儴缃?
-> 闆堕厤缃儴缃茶В鍐虫柟妗?
-**鍔熻兘鐗规€?*:
-- 鉁?澶氬钩鍙版敮鎸侊紙Vercel/Netlify/GitHub Pages/SSH/Docker锛?- 鉁?鑷姩璇嗗埆椤圭洰绫诲瀷
-- 鉁?浜や簰寮忛厤缃?- 鉁?閮ㄧ讲杩涘害鏄剧ず
-- 鉁?澶氳瑷€鏀寔
+### 🚀 DeployForge - 一键部署
 
-**蹇€熷紑濮?*:
+> 零配置部署解决方案
+
+**功能特性**:
+- ✅ 多平台支持（Vercel/Netlify/GitHub Pages/SSH/Docker）
+- ✅ 自动识别项目类型
+- ✅ 交互式配置
+- ✅ 部署进度显示
+- ✅ 多语言支持
+
+**快速开始**:
 ```bash
 cd deployforge
 npm install
 npm link
 
-# 鍦ㄩ」鐩洰褰曚腑杩愯
-deployforge init    # 鍒濆鍖栭厤缃?deployforge deploy  # 涓€閿儴缃?```
+# 在项目目录中运行
+deployforge init    # 初始化配置
+deployforge deploy  # 一键部署
+```
 
 ---
 
-## 馃洜锔?鎶€鏈爤
+## 🛠️ 技术栈
 
-| 妯″潡 | 鍓嶇 | 鍚庣 | 鐗硅壊鎶€鏈?|
+| 模块 | 前端 | 后端 | 特色技术 |
 |------|------|------|----------|
-| KnowForge | HTML + TailwindCSS | Node.js + Express | 鏈湴 JSON 瀛樺偍 |
-| CodeForge | VSCode WebView | TypeScript + VSCode API | OpenAI 闆嗘垚 |
-| FlowForge | React-like 缁勪欢 | Node.js + node-cron | 浠诲姟璋冨害寮曟搸 |
-| DeployForge | CLI 浜や簰 | Node.js + Commander | 澶氬钩鍙伴€傞厤鍣?|
+| KnowForge | HTML + TailwindCSS | Node.js + Express | 本地 JSON 存储 |
+| CodeForge | VSCode WebView | TypeScript + VSCode API | OpenAI 集成 |
+| FlowForge | React-like 组件 | Node.js + node-cron | 任务调度引擎 |
+| DeployForge | CLI 交互 | Node.js + Commander | 多平台适配器 |
 
 ---
 
-## 馃殌 蹇€熷紑濮?
-### 1. 鍏嬮殕浠撳簱
+## 🚀 快速开始
+
+### 1. 克隆仓库
 
 ```bash
 git clone https://github.com/Y1-q-1Q/devforge.git
 cd devforge
 ```
 
-### 2. 鍚姩鎵€闇€妯″潡
+### 2. 启动所需模块
 
-**鍚姩鐭ヨ瘑绠＄悊**:
+**启动知识管理**:
 ```bash
 cd knowforge
 npm install && npm start
-# 璁块棶 http://localhost:3000
+# 访问 http://localhost:3000
 ```
 
-**鍚姩宸ヤ綔娴佽嚜鍔ㄥ寲**:
+**启动工作流自动化**:
 ```bash
 cd flowforge
 npm install && npm start
-# 璁块棶 http://localhost:3001
+# 访问 http://localhost:3001
 ```
 
-### 3. 瀹夎 VSCode 鎻掍欢
+### 3. 安装 VSCode 插件
 
 ```bash
 cd codeforge
 npm install && npm run compile
-# 鍦?VSCode 涓寜 F5
+# 在 VSCode 中按 F5
 ```
 
 ---
 
-## 馃摎 鏂囨。
+## 📎 文档
 
-- [馃摉 寮€鍙戞寚鍗梋(docs/DEVELOPMENT.md) - 寮€鍙戣鑼冨拰璐＄尞鎸囧崡
-- [馃彈锔?鏋舵瀯鏂囨。](docs/ARCHITECTURE.md) - 绯荤粺鏋舵瀯璁捐
-- [馃帹 涓€у寲璁捐](docs/PERSONALIZATION_DESIGN.md) - 澶氳瑷€鍜屼富棰樿璁?- [馃搳 甯傚満楠岃瘉](docs/MARKET_VALIDATION.md) - 甯傚満楠岃瘉绛栫暐
+- [📖 开发指南](docs/DEVELOPMENT.md) - 开发规范和贡献指南
+- [🏗️ 架构文档](docs/ARCHITECTURE.md) - 系统架构设计
+- [🎨 个性化设计](docs/PERSONALIZATION_DESIGN.md) - 多语言和主题设计
+- [📊 市场验证](docs/MARKET_VALIDATION.md) - 市场验证策略
 
 ---
 
-## 馃幆 鏍稿績鍑嗗垯
+## 🏆 核心准则
 
-### 鐢ㄦ埛绗竴
-- 鎵€鏈夎璁″繀椤昏€冭檻鐢ㄦ埛涓€у寲
-- 澶氳瑷€鏄紑鍙戠殑鍩虹瑕佹眰
-- 鐢ㄦ埛閰嶇疆鍙寔涔呭寲
+### 用户第一
+- 所有设计必须考虑用户个性化
+- 多语言是开发的基础要求
+- 用户配置可持久化
 
-### 甯傚満瀵煎悜
-- 杈瑰紑鍙戣竟杩唬杈归獙璇?- 甯傚満涓嶈涓€鍒囩櫧璐?- 鏁版嵁椹卞姩鍐崇瓥
+### 市场导向
+- 边开发边迭代边验证
+- 市场不认一切白费
+- 数据驱动决策
 
-### 浠ｇ爜璐ㄩ噺
-- 100 鍒嗘爣鍑?- 瀹屽杽鐨勯敊璇鐞?- 鍏ㄩ潰鐨勬祴璇曡鐩?
+### 代码质量
+- 100 分标准
+- 完善的错误处理
+- 全面的测试覆盖
+
 ---
 
-## 馃搱 璺嚎鍥?
-### Phase 1: 鍩虹鎼缓 鉁?- [x] KnowForge MVP
+## 📈 路线图
+
+### Phase 1: 基础搭建 ✅
+- [x] KnowForge MVP
 - [x] CodeForge MVP
 - [x] FlowForge MVP
 - [x] DeployForge MVP
-- [x] 澶氳瑷€鏀寔
-- [x] 涓€у寲绯荤粺
+- [x] 多语言支持
+- [x] 个性化系统
 
-### Phase 2: 鐢熸€佹墿灞?馃毀
-- [ ] 妯″潡闂存暟鎹仈鍔?- [ ] 缁熶竴鐢ㄦ埛绯荤粺
-- [ ] 浜戠鍚屾锛堝彲閫夛級
-- [ ] 鎻掍欢甯傚満
+### Phase 2: 生态扩展 🚧
+- [ ] 模块间数据联动
+- [ ] 统一用户系统
+- [ ] 云端同步（可选）
+- [ ] 插件市场
 
-### Phase 3: 骞冲彴鍖?- [ ] 鍥㈤槦鍗忎綔
-- [ ] 浼佷笟鐗堝姛鑳?- [ ] 楂樼骇鍒嗘瀽
-
----
-
-## 馃 璐＄尞
-
-娆㈣繋鎻愪氦 Issue 鍜?PR锛?
-### 璐＄尞娴佺▼
-
-1. **Fork** 浠撳簱
-2. **鍒涘缓鍒嗘敮**: `git checkout -b feature/xxx`
-3. **鎻愪氦鏇存敼**: `git commit -m 'feat: xxx'`
-4. **鎺ㄩ€佸垎鏀?*: `git push origin feature/xxx`
-5. **鍒涘缓 Pull Request**
-
-### 浠ｇ爜瑙勮寖
-
-- 浣跨敤 TypeScript锛堟帹鑽愶級
-- 閬靛惊 ESLint 瑙勮寖
-- 娣诲姞蹇呰鐨勬敞閲?- 鏇存柊鐩稿叧鏂囨。
+### Phase 3: 平台化
+- [ ] 团队协作
+- [ ] 企业版功能
+- [ ] 高级分析
 
 ---
 
-## 馃搫 璁稿彲璇?
-[MIT](LICENSE) 漏 tinyfish
+## 🤝 贡献
+
+欢迎提交 Issue 和 PR！
+
+### 贡献流程
+
+1. **Fork** 仓库
+2. **创建分支**: `git checkout -b feature/xxx`
+3. **提交更改**: `git commit -m 'feat: xxx'`
+4. **推送分支**: `git push origin feature/xxx`
+5. **创建 Pull Request**
+
+### 代码规范
+
+- 使用 TypeScript（推荐）
+- 遵循 ESLint 规范
+- 添加必要的注释
+- 更新相关文档
 
 ---
 
-## 馃敆 閾炬帴
+## 📄 许可证
 
-- 馃寪 **GitHub**: https://github.com/Y1-q-1Q/devforge
-- 馃悰 **Issues**: https://github.com/Y1-q-1Q/devforge/issues
-- 馃挰 **Discussions**: https://github.com/Y1-q-1Q/devforge/discussions
+[MIT](LICENSE) © tinyfish
+
+---
+
+## 🔗 链接
+
+- 🌐 **GitHub**: https://github.com/Y1-q-1Q/devforge
+- 🐛 **Issues**: https://github.com/Y1-q-1Q/devforge/issues
+- 💬 **Discussions**: https://github.com/Y1-q-1Q/devforge/discussions
 
 ---
 
 <p align="center">
-  <strong>猸?Star 鎴戜滑 if you find it helpful!</strong>
+  <strong>⭐ Star 我们 if you find it helpful!</strong>
 </p>
 
 <p align="center">
-  Made with 鉂わ笍 by tinyfish
+  Made with ❤️ by tinyfish
 </p>
+
 ## 文档入口与归属边界
 
 - 生态战略 / 总纲：`C:\WorkSpace\Projects\OpenclawAuto\projects\PROJECTS-INDEX.md`
@@ -247,4 +295,3 @@ npm install && npm run compile
 - 本仓库 docs：`./docs/`（如存在）
 
 > 本仓库不重复生态级战略与 workspace 运行真相，避免口径冲突。
-
